@@ -366,3 +366,13 @@ html:not([lang="ru"]) [data-lang-block="ru"] { display: none; }
 .egg .egg-alt { opacity: 0; }
 .egg:hover > span:first-child { opacity: 0; }
 .egg:hover .egg-alt { opacity: 1; }
+
+/* macOS alpha: a live download, but marked as rougher than the TestFlight build. */
+.tile-note { display: block; margin-top: 2px; font: 400 13px/1.3 var(--on-font); color: var(--on-text2); }
+.tile-alpha .tile-badge {
+  background: color-mix(in srgb, var(--on-blue) 14%, transparent);
+  color: var(--on-blue);
+}
+
+/* A line under a team member's name; pulled up to sit with the name. */
+.people .role { margin-top: -10px; font: 400 13px/1.3 var(--on-font); color: var(--on-text2); }
