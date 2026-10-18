@@ -38,6 +38,18 @@
     document.querySelectorAll('video[autoplay]').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
   }
 
+  // Demo video: the glass button starts it with sound and hands over to the native controls.
+  const demo = document.querySelector('video.demo');
+  const play = document.querySelector('.still .play');
+  if (demo && play) {
+    play.addEventListener('click', () => {
+      play.hidden = true;
+      demo.controls = true;
+      demo.play().catch(() => {});
+    });
+    demo.addEventListener('ended', () => { demo.controls = false; demo.load(); play.hidden = false; play.focus(); });
+  }
+
   // Team videos: sound on hover (mouse); every click/tap/Enter restarts with sound. Browsers only allow
   // audio after the visitor has interacted with the page, so if unmuting is
   // refused the video falls back to muted playback.
