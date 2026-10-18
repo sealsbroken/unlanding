@@ -358,3 +358,11 @@ html:not([lang="ru"]) [data-lang-block="ru"] { display: none; }
 .doc li { margin: 0 0 8px; }
 .doc li::marker { color: var(--on-text3); }
 .doc strong { font-weight: 600; }
+
+/* Easter egg: hover Rinat's name. Both spellings share one grid cell, so the
+   wider one sets the width and nothing shifts when they swap. */
+.egg { display: inline-grid; cursor: default; }
+.egg > span { grid-area: 1 / 1; transition: opacity .15s ease; }
+.egg .egg-alt { opacity: 0; }
+.egg:hover > span:first-child { opacity: 0; }
+.egg:hover .egg-alt { opacity: 1; }
