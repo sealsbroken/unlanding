@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://sealsbroken.com
+    env:
+      # Not secret: identifiers of the onym/unlanding Vercel project.
+      VERCEL_ORG_ID: team_DOFgNMtgXXjpU2Kn7SnO2xdQ
+      VERCEL_PROJECT_ID: prj_Z76gkXUVdBPiC9ytMyjMabVlfQGh
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check token
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Repository secret VERCEL_TOKEN is not set."
+            exit 1
+          fi
+
+      - name: Deploy to Vercel production
+        run: npx --yes vercel@64 deploy --prod --yes --token "$VERCEL_TOKEN"
