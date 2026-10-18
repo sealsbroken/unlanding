@@ -261,6 +261,41 @@ body {
 }
 .un-site a.tile-active:focus-visible { outline: none; box-shadow: var(--un-ring); }
 
+/* Team */
+.team {
+  margin-top: clamp(72px, 8cqw, 112px);
+  display: flex; flex-direction: column; align-items: center;
+  gap: clamp(24px, 3cqw, 36px);
+}
+.team h2 {
+  margin: 0;
+  font: 500 12.5px/1.2 var(--on-font);
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  color: var(--on-text2);
+}
+.people {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 28px clamp(28px, 5cqw, 64px);
+}
+.people li {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  font: 600 15px/1.3 var(--on-font);
+  text-align: center;
+}
+.avatar {
+  width: clamp(104px, 12cqw, 136px); aspect-ratio: 1;
+  border-radius: 50%; overflow: hidden;
+  background: var(--on-surface3);
+  box-shadow: 0 0 0 1px var(--on-hairline-strong);
+}
+.avatar video, .avatar img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+}
+/* The source clip has its own circle mask baked in; zoom past its edge. */
+.avatar video { transform: scale(1.08); }
+
 /* Footer */
 .footer {
   margin-top: clamp(72px, 8cqw, 112px);
@@ -276,3 +311,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .un-site * { transition: none !important; }
 }
+
+.avatar.has-sound { cursor: pointer; transition: box-shadow .2s ease; }
+.avatar.has-sound[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--on-blue); }
+.avatar.has-sound:focus-visible { outline: none; box-shadow: var(--un-ring); }

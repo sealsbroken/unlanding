@@ -1,7 +1,7 @@
 (() => {
   const T = {
-    en: { title: 'Un — Learning screen-free', language: 'Language', hero: 'Learning screen-free', sub: 'Your child counts real toys on the table and talks with a friendly tutor. The camera and the voice do the rest.', play: 'Play video', caption: 'A real lesson, filmed at the kitchen table.', cta: 'Download on TestFlight', note: 'Free beta for iPhone and iPad.', platforms: 'Platforms', apple: 'iPhone & iPad', oss: 'Open source engine and lessons:', made: 'Made for curious counters.' },
-    ru: { title: 'Un — Учимся без экрана', language: 'Язык', hero: 'Учимся без экрана', sub: 'Ребёнок считает настоящие игрушки на столе и разговаривает с добрым наставником. Камера и голос делают остальное.', play: 'Смотреть видео', caption: 'Настоящий урок, снятый за кухонным столом.', cta: 'Скачать в TestFlight', note: 'Бесплатная бета для iPhone и iPad', platforms: 'Платформы', apple: 'iPhone и iPad', oss: 'Открытый движок и уроки:', made: 'Для тех, кто любит считать.' }
+    en: { title: 'Un — Learning screen-free', language: 'Language', hero: 'Learning screen-free', sub: 'Your child counts real toys on the table and talks with a friendly tutor. The camera and the voice do the rest.', play: 'Play video', caption: 'A real lesson, filmed at the kitchen table.', cta: 'Download on TestFlight', note: 'Free beta for iPhone and iPad.', platforms: 'Platforms', apple: 'iPhone & iPad', oss: 'Open source engine and lessons:', made: 'Made for curious counters.', team: 'Team', rinat: 'Rinat Enikeev', alexey: 'Alexey Shirshov', semen: 'Semen Morshinin', rinatSound: "Play Rinat's video with sound" },
+    ru: { title: 'Un — Учимся без экрана', language: 'Язык', hero: 'Учимся без экрана', sub: 'Ребёнок считает настоящие игрушки на столе и разговаривает с добрым наставником. Камера и голос делают остальное.', play: 'Смотреть видео', caption: 'Настоящий урок, снятый за кухонным столом.', cta: 'Скачать в TestFlight', note: 'Бесплатная бета для iPhone и iPad', platforms: 'Платформы', apple: 'iPhone и iPad', oss: 'Открытый движок и уроки:', made: 'Для тех, кто любит считать.', team: 'Команда', rinat: 'Ринат Еникеев', alexey: 'Алексей Ширшов', semen: 'Семён Моршинин', rinatSound: 'Включить видео Рината со звуком' }
   };
 
   const store = {
@@ -30,6 +30,41 @@
     store.set(next);
     apply(next);
     document.querySelector(`.lang [data-lang="${next}"]`).focus();
+  });
+
+  // Respect reduced motion: show the poster instead of looping video.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video[autoplay]').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
+  }
+
+  // Team videos: sound on hover (mouse); every click/tap/Enter restarts with sound. Browsers only allow
+  // audio after the visitor has interacted with the page, so if unmuting is
+  // refused the video falls back to muted playback.
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.avatar.has-sound').forEach(box => {
+    const v = box.querySelector('video');
+    const sound = on => {
+      box.setAttribute('aria-pressed', String(on));
+      if (on) {
+        v.loop = false;
+        v.currentTime = 0;
+        v.muted = false;
+        v.play().catch(() => { v.muted = true; v.loop = true; box.setAttribute('aria-pressed', 'false'); if (!still) v.play().catch(() => {}); });
+      } else {
+        v.muted = true;
+        v.loop = true;
+        if (still) { v.pause(); v.currentTime = 0; }
+        else if (v.paused) v.play().catch(() => {});
+      }
+    };
+    // One play-through with sound, then back to the silent loop.
+    v.addEventListener('ended', () => sound(false));
+    box.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') sound(true); });
+    box.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') sound(false); });
+    box.addEventListener('click', () => sound(true));
+    box.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sound(true); }
+    });
   });
 
   const saved = store.get();
