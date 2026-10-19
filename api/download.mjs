@@ -6,8 +6,7 @@ const REPO = 'sealsbroken/unengine';
 const ASSETS = {
   android: /-android\.apk$/,
   macos: /-macos-arm64[^/]*\.zip$/,
-  windows: /-windows-x64[^/]*\.zip$/,
-  linux: /-linux-x86_64[^/]*\.tar\.gz$/
+  windows: /-windows-x64[^/]*\.zip$/
 };
 const FALLBACK = `https://github.com/${REPO}/releases`;
 

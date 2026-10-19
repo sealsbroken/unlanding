@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/download/:platform(android|macos|windows|linux)", "destination": "/api/download?platform=:platform" }
+    { "source": "/download/:platform(android|macos|windows)", "destination": "/api/download?platform=:platform" }
   ]
 }
