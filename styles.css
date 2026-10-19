@@ -201,6 +201,7 @@ body {
 .un-site a.cta-button:focus-visible { outline: none; box-shadow: var(--un-ring); }
 .un-site a.cta-button:active { transform: scale(.97); background: color-mix(in srgb, var(--on-blue) 84%, #000); }
 .cta-button svg { margin-top: -3px; flex: none; }
+.cta-button svg[hidden] { display: none; }
 .cta-note { font-size: 15px; color: var(--on-text2); }
 
 /* Platforms */
